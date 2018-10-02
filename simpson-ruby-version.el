@@ -1,7 +1,14 @@
 ;;; simpson-ruby-version.el --- Function that reads .ruby-version and sets the $PATH correctly for processes inside emacs.
 
+;; Adam Simpson <adam@adamsimpson.net>
+;; Version: 0.1.0
+;; Package-Requires: ((f "0.20.0") (projectile "1.1.0-snapshot"))
+;; Keywords: ruby, ruby-version
+
 ;;; Commentary:
-;; This is a function that can be M-x whenever you change projects that require a different version of Ruby.
+;; This is a function that can be M-x'd whenever you change projects that require a different version of Ruby.  It's modeled after chruby.
+;; Like chruby, if there is a .ruby-version file then the env variables $GEM_HOME and $GEM_PATH are both set accordingly and the gem bin directories are
+;; added to the $PATH varaible.
 ;; I assume you use projectile to manage projects within Emacs.
 
 ;;; Code:
@@ -19,7 +26,7 @@
   "The location of additional gems.")
 
 (defun simpson-ruby-version()
-  "Use 'projectile-project-root' to check for .ruby-version file and then set env variables accordingly."
+  "Check for .ruby-version file and set env variables accordingly."
   (interactive)
   (let ((base (file-exists-p (concat (ignore-errors (projectile-project-root)) ".ruby-version")))
         (default-gem simpson-ruby-default-gem-path)
