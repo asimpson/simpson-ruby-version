@@ -1,0 +1,13 @@
+* simpson-ruby-version
+** Example configuration
+#+BEGIN_SRC elisp
+(use-package simpson-ruby-version
+  :commands simpson-ruby-version
+  :config (progn
+            (setq simpson-ruby-default-gem-path "/usr/local/bin/gem")
+            (setq simpson-ruby-rubies-path "/usr/local/rubies/")
+            (setq simpson-ruby-gem-path "~/.gem/ruby/")))
+#+END_SRC
+
+** Usage
+~M-x simpson-ruby-version~ whenever you need to change the environment to a new Ruby version.
