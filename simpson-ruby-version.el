@@ -1,7 +1,7 @@
 ;;; simpson-ruby-version.el --- Function that reads .ruby-version and sets the $PATH correctly for processes inside emacs.
 
 ;; Adam Simpson <adam@adamsimpson.net>
-;; Version: 0.1.0
+;; Version: 0.1.1
 ;; Package-Requires: ((f "0.20.0") (projectile "1.1.0-snapshot"))
 ;; Keywords: ruby, ruby-version
 
@@ -34,16 +34,16 @@
     (if base
         (let* ((version (string-trim (f-read-text (concat (projectile-project-root) ".ruby-version"))))
                (base-version (concat (mapconcat 'identity (butlast (split-string version "\\.")) ".") ".0"))
-               (ruby-path (concat simpson-ruby-rubies-path "ruby-" version))
-               (gem-bin (concat (file-truename simpson-ruby-gem-path) version))
-               (gem-path (concat simpson-ruby-rubies-path "ruby-" version "/lib/ruby/gems/" base-version))
+               (ruby-path (concat simpson-ruby-rubies-path version))
+               (gem-bin (concat (file-truename simpson-ruby-gem-path) (nth 1 (split-string version "-"))))
+               (gem-path (concat simpson-ruby-rubies-path version "/lib/ruby/gems/" base-version))
                (gem-home (concat (file-truename simpson-ruby-gem-path) version)))
           (exec-path-from-shell-setenv "PATH" (concat gem-bin "/bin:" gem-path "/bin:" ruby-path "/bin:" path))
           (setenv "GEM_PATH" (concat gem-bin ":" gem-path))
           (setenv "GEM_HOME" gem-home))
-      (exec-path-from-shell-setenv "PATH" path)
-      (setenv "GEM_PATH" "")
-      (setenv "GEM_HOME" ""))))
+        (exec-path-from-shell-setenv "PATH" path)
+        (setenv "GEM_PATH" "")
+        (setenv "GEM_HOME" ""))))
 
 (provide 'simpson-ruby-version)
 
